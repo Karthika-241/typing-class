@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typing Class - Learn typing the fun way!</title>
+    <!-- Google Font Fredoka is perfect for friendly, rounded children typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+
+<body>
+    <!-- Floating background decorative elements -->
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="cloud cloud-3"></div>
+
+    <!-- Sound & Music Toggle Bar -->
+    <div class="top-controls">
+        <button id="sound-toggle" class="control-btn sound-on" title="Toggle Sound">
+            <span class="icon">🔊</span> Sound ON
+        </button>
+        <button id="leaderboard-btn" class="control-btn" title="View Leaderboard">
+            <span class="icon">🏆</span> Leaderboard
+        </button>
+    </div>
+
+    <!-- Main Container -->
+    <div class="app-container">
+
+        <!-- ================= WELCOME SCREEN ================= -->
+        <section id="screen-welcome" class="screen active">
+            <div class="welcome-card card">
+                <div class="app-logo">⌨️</div>
+                <h1>Typing Class</h1>
+                <p class="subtitle">Let's Learn Typing the Fun Way! 🚀</p>
+
+                <form id="welcome-form" onsubmit="event.preventDefault();">
+                    <div class="form-group">
+                        <label for="child-name">What is your name? 😊</label>
+                        <input type="text" id="child-name" placeholder="Enter your name..." required minlength="2">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="child-age">How old are you? 🎂</label>
+                        <input type="number" id="child-age" placeholder="Age" min="3" max="99" required>
+                    </div>
+
+                    <button type="submit" id="btn-start" class="btn btn-primary pulse">
+                        Start Learning! 🚀
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- ================= LEVEL SELECT SCREEN ================= -->
+        <section id="screen-level-select" class="screen">
+            <div class="profile-header">
+                <h2>Welcome, <span id="display-name" class="highlight">Friend</span>! 👋</h2>
+                <p>Pick a fun challenge below to start typing!</p>
+            </div>
+
+            <div class="level-cards-container">
+                <!-- Beginner Card -->
+                <div class="level-card card" id="card-beginner">
+                    <div class="level-badge beginner-badge">🧸 Beginner</div>
+                    <h3>Toy Jumper</h3>
+                    <p class="desc">Learn the keyboard keys one by one. Press correct keys to make toys jump and dance!
+                        🧸💃</p>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" id="fill-beginner" style="width: 0%;"></div>
+                    </div>
+                    <span class="progress-text" id="text-beginner">0% Complete</span>
+                    <button class="btn btn-secondary" onclick="app.startBeginnerMode()">Play Beginner 🎮</button>
+                </div>
+
+                <!-- Intermediate Card -->
+                <div class="level-card card" id="card-intermediate">
+                    <div class="level-badge intermediate-badge">🎈 Intermediate</div>
+                    <h3>Balloon Popper</h3>
+                    <p class="desc">Type simple words to pop balloons and clear the screen before the time runs out!
+                        🎈💥</p>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" id="fill-intermediate" style="width: 0%;"></div>
+                    </div>
+                    <span class="progress-text" id="text-intermediate">0% Complete</span>
+                    <button class="btn btn-secondary" onclick="app.startIntermediateMode()">Play Intermediate
+                        🎮</button>
+                </div>
+
+                <!-- Exam Card -->
+                <div class="level-card card" id="card-exam">
+                    <div class="level-badge exam-badge">🏆 Exam Mode</div>
+                    <h3>Time Cadet</h3>
+                    <p class="desc">Take a formal typing exam to test your speed! Earn a certificate for your speed!
+                        🏆🛸</p>
+                    <div class="progress-stats" id="best-exam-wpm">Best WPM: --</div>
+                    <button class="btn btn-primary" onclick="app.startExamMode()">Take Exam 📝</button>
+                </div>
+            </div>
+
+            <div class="profile-footer">
+                <button class="btn btn-text" id="logout-btn">← Switch User</button>
+            </div>
+        </section>
+
+        <!-- ================= BEGINNER MODE ================= -->
+        <section id="screen-beginner" class="screen">
+            <div class="game-header">
+                <button class="btn btn-back" onclick="app.showLevelSelect()">← Back</button>
+                <div class="game-title">🧸 Toy Jumper (Beginner)</div>
+                <div class="game-stats">
+                    <span class="stat-bubble">
+                        <select id="beginner-lesson-select" class="lesson-select-dropdown"
+                            onchange="app.beginnerGame.selectLessonFromDropdown(this.value)">
+                            <!-- Dynamic options populated in JS -->
+                        </select>
+                    </span>
+                    <button class="btn btn-back" style="padding: 6px 12px; margin-left: 5px;"
+                        onclick="app.beginnerGame.restartCurrentLesson()">🔄 Restart</button>
+                </div>
+            </div>
+
+            <!-- Toy Selection -->
+            <div class="toy-selector">
+                <p>Choose your typing companion toy:</p>
+                <div class="toy-options">
+                    <button class="toy-opt-btn active" data-toy="teddy">Teddy Bear 🧸</button>
+                    <button class="toy-opt-btn" data-toy="robot">Robot 🤖</button>
+                    <button class="toy-opt-btn" data-toy="car">Toy Car 🚗</button>
+                </div>
+            </div>
+
+            <!-- Game Center Panel (Prompt & Interactive SVGs) -->
+            <div class="game-playground">
+                <div class="beginner-sequence-box">
+                    <div class="sequence-title">TYPE THIS</div>
+                    <div id="beginner-sequence-display" class="sequence-display">-</div>
+
+                    <div class="sequence-cursor-indicator">
+                        <span class="arrow-indicator" id="beginner-arrow-indicator">↑</span>
+                        <div class="instruction-bubble" id="beginner-instruction-text">Press A</div>
+                    </div>
+
+                    <div class="beginner-progress-row">
+                        <div class="progress-bar-container">
+                            <div class="progress-bar-fill" id="beginner-lesson-progress-fill" style="width: 0%;"></div>
+                        </div>
+                        <span class="progress-text" id="beginner-lesson-progress-text">0% Complete (0/8 keys)</span>
+                    </div>
+                </div>
+
+                <!-- Interactive SVG Toys Container -->
+                <div class="toy-stage">
+                    <!-- 1. Teddy Bear SVG -->
+                    <svg id="svg-teddy" class="toy-svg active" viewBox="0 0 200 200" width="180" height="180">
+                        <!-- Ears -->
+                        <circle cx="50" cy="50" r="25" fill="#c38d6c" />
+                        <circle cx="50" cy="50" r="13" fill="#e9baa4" />
+                        <circle cx="150" cy="50" r="25" fill="#c38d6c" />
+                        <circle cx="150" cy="50" r="13" fill="#e9baa4" />
+                        <!-- Head -->
+                        <circle cx="100" cy="80" r="50" fill="#d99f7d" />
+                        <!-- Snout -->
+                        <ellipse cx="100" cy="95" rx="20" ry="14" fill="#e9baa4" />
+                        <polygon points="100,88 92,93 108,93" fill="#4d2f1f" />
+                        <path d="M93,100 Q100,105 100,99 Q100,105 107,100" stroke="#4d2f1f" stroke-width="2.5"
+                            fill="none" />
+                        <!-- Eyes -->
+                        <circle cx="80" cy="72" r="6" fill="#3a1e12" />
+                        <circle cx="80" cy="70" r="2" fill="#fff" />
+                        <circle cx="120" cy="72" r="6" fill="#3a1e12" />
+                        <circle cx="120" cy="70" r="2" fill="#fff" />
+                        <!-- Cheeks -->
+                        <circle cx="68" cy="85" r="7" fill="#fca5a5" opacity="0.6" />
+                        <circle cx="132" cy="85" r="7" fill="#fca5a5" opacity="0.6" />
+                        <!-- Body -->
+                        <rect x="65" y="125" width="70" height="70" rx="30" fill="#c38d6c" />
+                        <ellipse cx="100" cy="160" rx="22" ry="25" fill="#e9baa4" />
+                        <!-- Left Arm (Waving Arm) -->
+                        <g id="teddy-left-arm" class="arm">
+                            <rect x="35" y="115" width="35" height="20" rx="10" fill="#c38d6c"
+                                transform="rotate(-15, 60, 125)" />
+                        </g>
+                        <!-- Right Arm -->
+                        <g id="teddy-right-arm" class="arm">
+                            <rect x="130" y="115" width="35" height="20" rx="10" fill="#c38d6c"
+                                transform="rotate(15, 140, 125)" />
+                        </g>
+                    </svg>
+
+                    <!-- 2. Robot SVG -->
+                    <svg id="svg-robot" class="toy-svg" viewBox="0 0 200 200" width="180" height="180">
+                        <!-- Antenna -->
+                        <line x1="100" y1="45" x2="100" y2="15" stroke="#94a3b8" stroke-width="5" />
+                        <circle id="robot-antenna-tip" cx="100" cy="15" r="8" fill="#ef4444" />
+                        <!-- Ears -->
+                        <rect x="42" y="65" width="10" height="20" rx="3" fill="#475569" />
+                        <rect x="148" y="65" width="10" height="20" rx="3" fill="#475569" />
+                        <!-- Head -->
+                        <rect x="50" y="45" width="100" height="60" rx="12" fill="#64748b" stroke="#475569"
+                            stroke-width="3" />
+                        <!-- Eyes Display -->
+                        <rect x="62" y="58" width="76" height="28" rx="6" fill="#0f172a" />
+                        <circle id="robot-eye-left" cx="80" cy="72" r="7" fill="#60a5fa" />
+                        <circle id="robot-eye-right" cx="120" cy="72" r="7" fill="#60a5fa" />
+                        <!-- Mouth (LED dots) -->
+                        <rect x="75" y="90" width="50" height="6" rx="3" fill="#22c55e" />
+                        <!-- Body -->
+                        <rect x="60" y="110" width="80" height="65" rx="10" fill="#475569" stroke="#334155"
+                            stroke-width="3" />
+                        <!-- Screen -->
+                        <rect x="75" y="120" width="50" height="35" rx="4" fill="#cbd5e1" />
+                        <polygon points="85,148 100,125 115,148" fill="#ef4444" id="robot-screen-graph" />
+                        <!-- Wheels/Base -->
+                        <circle cx="80" cy="182" r="12" fill="#1e293b" />
+                        <circle cx="120" cy="182" r="12" fill="#1e293b" />
+                    </svg>
+
+                    <!-- 3. Toy Car SVG -->
+                    <div class="car-track">
+                        <svg id="svg-car" class="toy-svg" viewBox="0 0 200 120" width="180" height="128">
+                            <!-- Body -->
+                            <path
+                                d="M20,70 L20,55 Q20,35 55,32 L135,32 Q170,35 170,55 L175,70 Q180,72 180,78 L180,95 Q180,98 175,98 L160,98 L160,98 L40,98 L20,98 Q15,98 15,95 L15,78 Q15,72 20,70 Z"
+                                fill="#3b82f6" />
+                            <!-- Cabin Glass -->
+                            <path d="M55,38 L135,38 Q155,40 152,58 L45,58 Q45,40 55,38 Z" fill="#93c5fd" />
+                            <!-- Spoiler -->
+                            <rect x="15" y="42" width="15" height="15" fill="#1d4ed8" />
+                            <rect x="8" y="37" width="28" height="6" rx="2" fill="#ef4444" />
+                            <!-- Wheels -->
+                            <g id="car-wheel-left">
+                                <circle cx="50" cy="98" r="18" fill="#1e293b" />
+                                <circle cx="50" cy="98" r="8" fill="#94a3b8" />
+                                <line x1="50" y1="80" x2="50" y2="116" stroke="#fff" stroke-width="2" />
+                            </g>
+                            <g id="car-wheel-right">
+                                <circle cx="140" cy="98" r="18" fill="#1e293b" />
+                                <circle cx="140" cy="98" r="8" fill="#94a3b8" />
+                                <line x1="140" y1="80" x2="140" y2="116" stroke="#fff" stroke-width="2" />
+                            </g>
+                            <!-- Headlights -->
+                            <polygon points="175,72 195,68 195,85 175,80" fill="#fde047" opacity="0.8"
+                                id="car-light-beam" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Virtual Keyboard and finger instructions -->
+            <div id="beginner-keyboard-area">
+                <div class="finger-guide-text" id="beginner-finger-guide">
+                    Use your <span class="finger-name highlight">LEFT INDEX</span> finger!
+                </div>
+                <!-- Interactive Keyboard Component -->
+                <div class="virtual-keyboard" id="keyboard-beginner-view"></div>
+            </div>
+        </section>
+
+        <!-- ================= INTERMEDIATE MODE ================= -->
+        <section id="screen-intermediate" class="screen">
+            <div class="game-header">
+                <button class="btn btn-back" onclick="app.showLevelSelect()">← Back</button>
+                <div class="game-title">🎈 Balloon Popper (Intermediate)</div>
+                <div class="game-stats">
+                    <span class="stat-bubble">Score: <strong id="inter-score">0</strong></span>
+                    <span class="stat-bubble">Pops: <strong id="inter-pops">0</strong></span>
+                    <span class="stat-bubble">Time: <strong id="inter-timer">60s</strong></span>
+                </div>
+            </div>
+
+            <!-- Playground with floating balloons -->
+            <div class="balloon-playground" id="balloon-container">
+                <!-- Balloons dynamically injected here -->
+            </div>
+
+            <!-- Dynamic word target display -->
+            <div class="word-input-container">
+                <p class="word-instruction">Type the active balloon word:</p>
+                <div id="active-word-display" class="word-target">---</div>
+                <input type="text" id="inter-word-input" autocomplete="off" autofocus placeholder="Type here...">
+            </div>
+
+            <!-- Virtual Keyboard for visual assistance -->
+            <div class="virtual-keyboard-wrapper">
+                <div class="virtual-keyboard" id="keyboard-intermediate-view"></div>
+            </div>
+        </section>
+
+        <!-- ================= EXAM MODE ================= -->
+        <section id="screen-exam" class="screen">
+            <div class="game-header">
+                <button class="btn btn-back" onclick="app.showLevelSelect()">← Back</button>
+                <div class="game-title">🏆 Time Cadet Exam</div>
+                <div class="game-stats">
+                    <span class="stat-bubble">WPM: <strong id="exam-wpm">0</strong></span>
+                    <span class="stat-bubble">Accuracy: <strong id="exam-accuracy">100%</strong></span>
+                    <span class="stat-bubble">Time: <strong id="exam-timer">60s</strong></span>
+                </div>
+            </div>
+
+            <!-- Paragraph typing card -->
+            <div class="exam-body-card card">
+                <div class="typing-text-panel" id="exam-paragraph-display">
+                    <!-- Characters are loaded here wraped in spans -->
+                </div>
+                <!-- Hidden textarea to capture keystrokes reliably on all platforms -->
+                <textarea id="exam-text-input" autofocus autocomplete="off"
+                    placeholder="Start typing above text to begin the exam..."></textarea>
+            </div>
+
+            <!-- Guidance -->
+            <div class="virtual-keyboard-wrapper">
+                <div class="virtual-keyboard" id="keyboard-exam-view"></div>
+            </div>
+        </section>
+
+        <!-- ================= SCORECARD OVERLAY ================= -->
+        <section id="screen-scorecard" class="screen">
+            <div class="scorecard-card card">
+                <div class="scorecard-emoji">🎉</div>
+                <h2 id="scorecard-title">Challenge Complete!</h2>
+
+                <div class="score-grid">
+                    <div class="score-item">
+                        <span class="lbl">Words Per Minute</span>
+                        <strong class="val" id="scorecard-wpm">0</strong>
+                    </div>
+                    <div class="score-item">
+                        <span class="lbl">Accuracy</span>
+                        <strong class="val" id="scorecard-accuracy">100%</strong>
+                    </div>
+                    <div class="score-item">
+                        <span class="lbl">Typing Errors</span>
+                        <strong class="val danger" id="scorecard-errors">0</strong>
+                    </div>
+                    <div class="score-item">
+                        <span class="lbl">Total Score</span>
+                        <strong class="val highlight" id="scorecard-score">0/100</strong>
+                    </div>
+                </div>
+
+                <div class="scorecard-actions">
+                    <button class="btn btn-primary" id="btn-show-certificate">🏆 Get Certificate</button>
+                    <button class="btn btn-secondary" onclick="app.showLevelSelect()">Play Again 🎮</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= LEADERBOARD MODAL/VIEW ================= -->
+        <section id="screen-leaderboard" class="screen">
+            <div class="leaderboard-card card">
+                <div class="leaderboard-header">
+                    <h2>🏆 Top Typists</h2>
+                    <p>Best speed record holders!</p>
+                </div>
+
+                <table class="leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Name</th>
+                            <th>Age</th>
+                            <th>WPM</th>
+                            <th>Accuracy</th>
+                            <th>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leaderboard-body">
+                        <!-- Loaded dynamically -->
+                    </tbody>
+                </table>
+
+                <div class="leaderboard-footer">
+                    <button class="btn btn-secondary" id="leaderboard-close-btn">Close Leaderboard</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ================= PRINTABLE CERTIFICATE MODAL ================= -->
+    <div id="certificate-modal" class="cert-modal-backdrop">
+        <div class="cert-modal-content">
+            <button class="close-cert-btn" id="cert-close-btn">&times;</button>
+
+            <div class="certificate-frame" id="certificate-print-area">
+                <div class="cert-border-double">
+                    <div class="cert-ribbon">⭐</div>
+                    <h1>Certificate of Achievement</h1>
+                    <p class="subtitle-cert">Proudly presented to</p>
+
+                    <div class="cert-candidate-name" id="cert-name">[Child Name]</div>
+
+                    <p class="cert-body">
+                        for successfully completing the <strong>Typing Class Cadet Exam</strong>.
+                        Demonstrating excellent dedication, accuracy, and typing speed.
+                    </p>
+
+                    <div class="cert-stats-badges">
+                        <div class="badge">Speed: <strong id="cert-wpm">--</strong> WPM</div>
+                        <div class="badge">Accuracy: <strong id="cert-accuracy">--</strong>%</div>
+                        <div class="badge">Score: <strong id="cert-score">--</strong>/100</div>
+                    </div>
+
+                    <div class="cert-sign-grid">
+                        <div class="cert-signature-line">
+                            <span class="signature">Keyboard Professor</span>
+                            <span class="label">Instructor</span>
+                        </div>
+                        <div class="cert-signature-line">
+                            <span class="signature" id="cert-date">2026-08-31</span>
+                            <span class="label">Date</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cert-actions-bar">
+                <button class="btn btn-primary" onclick="window.print()">Print Certificate 🖨️</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= BEGINNER LESSON COMPLETE MODAL ================= -->
+    <div id="beginner-lesson-complete-modal" class="cert-modal-backdrop">
+        <div class="cert-modal-content lesson-complete-card">
+            <div class="scorecard-emoji">🎉</div>
+            <h2 id="lesson-complete-title">Lesson Completed!</h2>
+            <p class="subtitle" id="lesson-complete-subtitle">Awesome typing! You passed this lesson!</p>
+
+            <div class="score-grid">
+                <div class="score-item">
+                    <span class="lbl">Keys Typed</span>
+                    <strong class="val" id="lesson-complete-keys">0</strong>
+                </div>
+                <div class="score-item">
+                    <span class="lbl">Accuracy</span>
+                    <strong class="val" id="lesson-complete-accuracy">100%</strong>
+                </div>
+            </div>
+
+            <div class="scorecard-actions">
+                <button class="btn btn-primary" id="btn-next-lesson" onclick="app.beginnerGame.loadNextLesson()">Next
+                    Lesson 🚀</button>
+                <button class="btn btn-secondary" id="btn-replay-lesson"
+                    onclick="app.beginnerGame.restartCurrentLesson(); document.getElementById('beginner-lesson-complete-modal').classList.remove('active');">Play
+                    Again 🎮</button>
+                <button class="btn btn-text" id="btn-lesson-exit"
+                    onclick="document.getElementById('beginner-lesson-complete-modal').classList.remove('active'); app.showLevelSelect();">Exit
+                    to Menu</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Scripts -->
+    <script src="{{ url_for('static', filename='js/beginner.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/intermediate.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/exam.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+
+</html>

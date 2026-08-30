@@ -1,0 +1,1282 @@
+/* ================= GLOBAL SYSTEMS & DESIGN SYSTEM ================= */
+:root {
+    --primary: #6c5ce7;
+    --primary-light: #a29bfe;
+    --primary-dark: #5849c7;
+    --secondary: #00cec9;
+    --secondary-light: #81ecec;
+    --bg-grad: linear-gradient(135deg, #a8c0ff 0%, #fbc2eb 100%);
+    --card-bg: rgba(255, 255, 255, 0.88);
+    --text-main: #2c3e50;
+    --text-muted: #7f8c8d;
+    --success: #2ecc71;
+    --error: #e74c3c;
+    --error-bg: #ffdad6;
+    
+    /* Keyboard Finger Color Guide Map */
+    --f-pinky: #ffa5b0;
+    --f-ring: #ffcba4;
+    --f-middle: #ffe89e;
+    --f-index: #cbf3b8;
+    --f-thumb: #b9ebd9;
+    --f-right-index: #cbd5e1;
+    --f-default: #ffffff;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Fredoka', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: var(--bg-grad);
+    min-height: 100vh;
+    color: var(--text-main);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
+    position: relative;
+    padding: 20px;
+}
+
+/* ================= BACKGROUND DECORATIONS ================= */
+.cloud {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 100px;
+    filter: blur(8px);
+    z-index: -1;
+    animation: float-clouds infinite linear;
+}
+
+.cloud-1 {
+    width: 250px;
+    height: 80px;
+    top: 10%;
+    left: -100px;
+    animation-duration: 35s;
+}
+
+.cloud-2 {
+    width: 320px;
+    height: 100px;
+    top: 50%;
+    right: -150px;
+    animation-duration: 45s;
+}
+
+.cloud-3 {
+    width: 180px;
+    height: 60px;
+    bottom: 10%;
+    left: -50px;
+    animation-duration: 25s;
+}
+
+@keyframes float-clouds {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(110vw); }
+}
+
+/* ================= INTERACTION SOUNDS CONTROLS ================= */
+.top-controls {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 12px;
+    z-index: 100;
+}
+
+.control-btn {
+    border: none;
+    border-radius: 50px;
+    padding: 10px 18px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    background: var(--card-bg);
+    color: var(--text-main);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+}
+
+.control-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.control-btn .icon {
+    font-size: 16px;
+}
+
+/* ================= MAIN CONTAINER ================= */
+.app-container {
+    width: 100%;
+    max-width: 950px;
+    min-height: 580px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 10;
+}
+
+/* Glassmorphism Cards */
+.card {
+    background: var(--card-bg);
+    border-radius: 28px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    padding: 40px;
+    width: 100%;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+/* ================= SCREENS TOGGLE ================= */
+.screen {
+    display: none;
+    width: 100%;
+    animation: slideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.screen.active {
+    display: block;
+}
+
+@keyframes slideIn {
+    0% { opacity: 0; transform: translateY(30px) scale(0.95); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ================= WELCOME SCREEN ================= */
+.app-logo {
+    font-size: 64px;
+    margin-bottom: 12px;
+    animation: bounce 2s infinite ease-in-out;
+    display: inline-block;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+}
+
+h1 {
+    font-size: 40px;
+    color: var(--primary);
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+}
+
+.subtitle {
+    font-size: 18px;
+    color: var(--text-muted);
+    margin-bottom: 30px;
+}
+
+.form-group {
+    text-align: left;
+    margin-bottom: 22px;
+    width: 100%;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.form-group label {
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text-main);
+}
+
+.form-group input {
+    width: 100%;
+    padding: 14px 20px;
+    border-radius: 16px;
+    border: 2px solid #e2e8f0;
+    outline: none;
+    font-size: 16px;
+    transition: border-color 0.2s;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.form-group input:focus {
+    border-color: var(--primary);
+}
+
+/* Buttons */
+.btn {
+    border: none;
+    border-radius: 18px;
+    padding: 14px 28px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(108, 92, 231, 0.3);
+}
+
+.btn-secondary {
+    background: var(--secondary);
+    color: #fff;
+}
+
+.btn-secondary:hover {
+    background: #00b5b2;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(0, 206, 201, 0.3);
+}
+
+.btn-back {
+    background: #e2e8f0;
+    color: var(--text-main);
+    padding: 8px 16px;
+    font-size: 14px;
+    border-radius: 12px;
+}
+
+.btn-back:hover {
+    background: #cbd5e1;
+}
+
+.btn-text {
+    background: transparent;
+    color: var(--text-muted);
+    font-weight: 500;
+    box-shadow: none;
+}
+
+.btn-text:hover {
+    color: var(--text-main);
+    text-decoration: underline;
+}
+
+.pulse {
+    animation: buttonPulse 2s infinite ease-in-out;
+}
+
+@keyframes buttonPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.04); }
+}
+
+/* ================= LEVEL SELECT SCREEN ================= */
+.profile-header {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.highlight {
+    color: var(--primary);
+    font-weight: 700;
+}
+
+.level-cards-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-bottom: 20px;
+}
+
+.level-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.level-badge {
+    border-radius: 50px;
+    padding: 5px 14px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.beginner-badge { background: #ffe8e8; color: #ff6b81; }
+.intermediate-badge { background: #e8f9ff; color: #00cec9; }
+.exam-badge { background: #f3e8ff; color: #a29bfe; }
+
+.level-card h3 {
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+.level-card .desc {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    line-height: 1.4;
+    flex-grow: 1;
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 10px;
+    background: #e2e8f0;
+    border-radius: 50px;
+    overflow: hidden;
+    margin-bottom: 6px;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: var(--primary);
+    border-radius: 50px;
+    transition: width 0.3s ease;
+}
+
+#card-intermediate .progress-bar-fill {
+    background: var(--secondary);
+}
+
+.progress-text {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 18px;
+}
+
+.progress-stats {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 18px;
+}
+
+.profile-footer {
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* ================= GAME MODULE HEADERS ================= */
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 15px 25px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+}
+
+.game-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.game-stats {
+    display: flex;
+    gap: 15px;
+}
+
+.stat-bubble {
+    background: #fff;
+    padding: 6px 14px;
+    border-radius: 12px;
+    font-size: 14px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+}
+
+.stat-bubble strong {
+    color: var(--primary);
+}
+
+/* ================= TOY JUMPER (BEGINNER) ================= */
+.toy-selector {
+    background: var(--card-bg);
+    border-radius: 18px;
+    padding: 12px 20px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.toy-options {
+    display: flex;
+    gap: 8px;
+}
+
+.toy-opt-btn {
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 6px 14px;
+    background: #fff;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.toy-opt-btn.active {
+    border-color: var(--primary);
+    background: var(--primary);
+    color: #fff;
+}
+
+.game-playground {
+    display: grid;
+    grid-template-columns: 1.2fr 2fr;
+    gap: 20px;
+    background: var(--card-bg);
+    border-radius: 24px;
+    padding: 30px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+    min-height: 240px;
+    align-items: center;
+}
+
+.prompt-box {
+    background: #f8fafc;
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+    border: 3px dashed #cbd5e1;
+}
+
+.prompt-instruction {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
+.prompt-key-char {
+    font-size: 80px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-top: 5px;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+.toy-stage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    height: 100%;
+}
+
+.toy-svg {
+    display: none;
+    transition: transform 0.2s;
+}
+
+.toy-svg.active {
+    display: block;
+}
+
+/* ================= TOYS ANIMATIONS ================= */
+
+/* Teddy wave and jump */
+.teddy-jump {
+    animation: teddyJumpAnim 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+@keyframes teddyJumpAnim {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-35px) scale(1.05); }
+}
+
+.teddy-wave-arm {
+    animation: armWave 0.5s ease-in-out;
+    transform-origin: 50px 125px;
+}
+@keyframes armWave {
+    0%, 100% { transform: rotate(-15deg); }
+    50% { transform: rotate(-60deg); }
+}
+
+/* Robot blink and spin */
+.robot-jump {
+    animation: robotJumpAnim 0.4s ease-out;
+}
+@keyframes robotJumpAnim {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-20px) scale(0.98); }
+}
+
+.robot-spin-antenna {
+    animation: antennaBlink 0.4s steps(4) infinite;
+}
+@keyframes antennaBlink {
+    0%, 100% { fill: #ef4444; }
+    50% { fill: #eab308; }
+}
+
+.robot-glow-eyes {
+    animation: eyeGlow 0.4s ease;
+}
+@keyframes eyeGlow {
+    0%, 100% { fill: #60a5fa; }
+    50% { fill: #facc15; r: 10px; }
+}
+
+/* Toy Car move track */
+.car-track {
+    width: 100%;
+    height: 120px;
+    background: #cbd5e1;
+    border-radius: 50px;
+    overflow: hidden;
+    position: relative;
+    border: 3px solid #94a3b8;
+}
+
+.car-track::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 6px;
+    border-top: 4px dashed #fff;
+    transform: translateY(-50%);
+}
+
+#svg-car {
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    transition: left 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.15);
+}
+
+.wheel-spin {
+    animation: spin 0.3s linear infinite;
+    transform-origin: 50px 98px;
+}
+#car-wheel-right.wheel-spin {
+    transform-origin: 140px 98px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ================= VIRTUAL KEYBOARD ================= */
+#beginner-keyboard-area {
+    background: var(--card-bg);
+    border-radius: 24px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+}
+
+.finger-guide-text {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 14px;
+}
+
+.virtual-keyboard {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    user-select: none;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.keyboard-row {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+}
+
+.key {
+    background: var(--f-default);
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    height: 48px;
+    min-width: 44px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-main);
+    box-shadow: 0 3px 0 #cbd5e1;
+    transition: all 0.1s;
+    cursor: default;
+}
+
+/* Highlight matching fingers with beautiful pastel overlay rules */
+.key[data-finger="pinky-l"], .key[data-finger="pinky-r"] { border-top: 3px solid var(--f-pinky); }
+.key[data-finger="ring-l"], .key[data-finger="ring-r"] { border-top: 3px solid var(--f-ring); }
+.key[data-finger="middle-l"], .key[data-finger="middle-r"] { border-top: 3px solid var(--f-middle); }
+.key[data-finger="index-l"], .key[data-finger="index-r"] { border-top: 3px solid var(--f-index); }
+.key[data-finger="thumb"] { border-top: 3px solid var(--f-thumb); }
+
+/* Highlight next target key */
+.key.highlight-target {
+    animation: keyBlink 1.2s infinite ease-in-out;
+    border: 3px solid var(--primary) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 0 var(--primary-dark) !important;
+}
+
+@keyframes keyBlink {
+    0%, 100% { background: #fff; }
+    50% { background: #e0d9ff; }
+}
+
+/* Visual feedback on press */
+.key.key-correct {
+    background: var(--success) !important;
+    border-color: #27ae60 !important;
+    color: #fff !important;
+    box-shadow: 0 0px 0 #27ae60 !important;
+    transform: translateY(3px) !important;
+}
+
+.key.key-wrong {
+    background: var(--error) !important;
+    border-color: #c0392b !important;
+    color: #fff !important;
+    box-shadow: 0 0px 0 #c0392b !important;
+    transform: translateY(3px) !important;
+    animation: shake 0.2s;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0) translateY(3px); }
+    25% { transform: translateX(-4px) translateY(3px); }
+    75% { transform: translateX(4px) translateY(3px); }
+}
+
+/* Key size scaling helpers */
+.key-space { flex-grow: 6; min-width: 250px; }
+.key-backspace { min-width: 80px; }
+.key-tab { min-width: 60px; }
+.key-caps { min-width: 75px; }
+.key-enter { min-width: 85px; }
+.key-shift { min-width: 100px; }
+
+/* ================= BALLOON POPPER (INTERMEDIATE) ================= */
+.balloon-playground {
+    background: #e0f2fe;
+    border: 3px solid #bae6fd;
+    border-radius: 24px;
+    height: 250px;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+}
+
+/* Balloons styling */
+.balloon {
+    position: absolute;
+    width: 65px;
+    height: 75px;
+    border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: 700;
+    font-size: 15px;
+    box-shadow: inset -5px -8px 0 rgba(0, 0, 0, 0.12), 0 6px 12px rgba(0,0,0,0.08);
+    transition: transform 0.1s;
+    user-select: none;
+    cursor: default;
+    animation: floatUp 6s linear infinite;
+    bottom: -80px;
+}
+
+.balloon::after {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 8px solid rgba(0, 0, 0, 0.15);
+}
+
+.balloon-string {
+    position: absolute;
+    bottom: -28px;
+    left: 50%;
+    width: 2px;
+    height: 22px;
+    background: rgba(0, 0, 0, 0.18);
+}
+
+@keyframes floatUp {
+    0% { bottom: -90px; }
+    100% { bottom: 260px; }
+}
+
+.balloon.pop-animation {
+    animation: popEffect 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+@keyframes popEffect {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.4); }
+    100% { transform: scale(0); opacity: 0; }
+}
+
+.word-input-container {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+}
+
+.word-instruction {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.word-target {
+    font-size: 38px;
+    font-weight: 700;
+    color: var(--primary);
+    margin: 10px 0;
+    letter-spacing: 1px;
+}
+
+.word-input-container input {
+    font-size: 20px;
+    padding: 10px 20px;
+    border-radius: 12px;
+    border: 2px solid #cbd5e1;
+    text-align: center;
+    width: 100%;
+    max-width: 300px;
+    outline: none;
+    font-weight: 600;
+}
+
+.word-input-container input:focus {
+    border-color: var(--primary);
+}
+
+/* ================= TIME CADET (EXAM MODE) ================= */
+.exam-body-card {
+    background: #fff;
+    padding: 30px;
+    border-radius: 24px;
+    text-align: left;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+    position: relative;
+}
+
+.typing-text-panel {
+    font-size: 20px;
+    line-height: 1.6;
+    letter-spacing: 0.5px;
+    height: 140px;
+    overflow-y: auto;
+    user-select: none;
+    color: #475569;
+    white-space: pre-wrap;
+    border-bottom: 2px dashed #f1f5f9;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+
+/* Characters rendering states in exam */
+.char-correct {
+    color: var(--success);
+    border-bottom: 2px solid var(--success);
+}
+
+.char-incorrect {
+    color: var(--error);
+    background-color: var(--error-bg);
+    border-bottom: 2px solid var(--error);
+}
+
+.char-current {
+    background: rgba(108, 92, 231, 0.15);
+    border-left: 2px solid var(--primary);
+    animation: cursorBlink 1s infinite;
+}
+
+@keyframes cursorBlink {
+    0%, 100% { border-left-color: var(--primary); }
+    50% { border-left-color: transparent; }
+}
+
+.exam-body-card textarea {
+    width: 100%;
+    height: 70px;
+    padding: 10px;
+    border-radius: 12px;
+    border: 2px solid #e2e8f0;
+    font-size: 16px;
+    outline: none;
+    resize: none;
+}
+
+.exam-body-card textarea:focus {
+    border-color: var(--primary);
+}
+
+/* ================= SCORECARD OVERLAY ================= */
+.scorecard-card {
+    max-width: 550px;
+    margin: 0 auto;
+}
+
+.scorecard-emoji {
+    font-size: 72px;
+    margin-bottom: 10px;
+}
+
+.score-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin: 30px 0;
+}
+
+.score-item {
+    background: #f8fafc;
+    border: 2px solid #f1f5f9;
+    padding: 16px;
+    border-radius: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.score-item .lbl {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+}
+
+.score-item .val {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.score-item .danger { color: var(--error); }
+.score-item .highlight { color: var(--primary); }
+
+.scorecard-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+/* ================= LEADERBOARD ================= */
+.leaderboard-card {
+    max-width: 650px;
+    margin: 0 auto;
+}
+
+.leaderboard-header {
+    margin-bottom: 20px;
+}
+
+.leaderboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 15px;
+}
+
+.leaderboard-table th, .leaderboard-table td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.leaderboard-table th {
+    background: #f8fafc;
+    font-weight: 700;
+    color: var(--text-muted);
+}
+
+.leaderboard-table tbody tr:hover {
+    background: #fafafa;
+}
+
+.leaderboard-footer {
+    margin-top: 15px;
+}
+
+/* ================= CERTIFICATE MODAL ================= */
+.cert-modal-backdrop {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 200;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.cert-modal-backdrop.active {
+    display: flex;
+}
+
+.cert-modal-content {
+    background: #fff;
+    border-radius: 20px;
+    max-width: 800px;
+    width: 100%;
+    padding: 30px;
+    position: relative;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+    animation: certOpen 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2) forwards;
+}
+
+@keyframes certOpen {
+    0% { transform: scale(0.85); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.close-cert-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 28px;
+    color: var(--text-muted);
+    cursor: pointer;
+}
+
+.close-cert-btn:hover {
+    color: var(--text-main);
+}
+
+/* Certificate Layout Border Styles */
+.certificate-frame {
+    background: #fdfbf7;
+    border: 15px solid #d4af37; /* gold border */
+    padding: 10px;
+    position: relative;
+}
+
+.cert-border-double {
+    border: 3px double #d4af37;
+    padding: 35px;
+    text-align: center;
+    position: relative;
+}
+
+.cert-ribbon {
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+.certificate-frame h1 {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 32px;
+    color: #4a3b10;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+}
+
+.subtitle-cert {
+    font-style: italic;
+    font-size: 15px;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+}
+
+.cert-candidate-name {
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--primary);
+    border-bottom: 2px solid #e2e8f0;
+    display: inline-block;
+    padding: 0 40px 5px 40px;
+    margin-bottom: 22px;
+}
+
+.cert-body {
+    font-size: 15px;
+    color: #475569;
+    line-height: 1.6;
+    max-width: 500px;
+    margin: 0 auto 25px auto;
+}
+
+.cert-stats-badges {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 35px;
+}
+
+.cert-stats-badges .badge {
+    background: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    border-radius: 50px;
+    padding: 6px 16px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.cert-sign-grid {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 40px;
+}
+
+.cert-signature-line {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 150px;
+}
+
+.cert-signature-line .signature {
+    font-style: italic;
+    font-size: 16px;
+    color: #2c3e50;
+    margin-bottom: 5px;
+    border-bottom: 1px solid var(--text-muted);
+    width: 100%;
+    text-align: center;
+    padding-bottom: 4px;
+}
+
+.cert-signature-line .label {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
+.cert-actions-bar {
+    margin-top: 20px;
+    text-align: center;
+}
+
+/* ================= PRINT STYLES ================= */
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    
+    #certificate-modal, #certificate-print-area, #certificate-print-area * {
+        visibility: visible;
+    }
+    
+    #certificate-modal {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        display: flex !important;
+        background: white;
+        padding: 0;
+        z-index: 9999;
+    }
+    
+    .cert-actions-bar, .close-cert-btn {
+        display: none !important;
+    }
+    
+    .certificate-frame {
+        border-color: #d4af37 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+/* ================= RESPONSIVE LAYOUTS ================= */
+@media (max-width: 768px) {
+    .level-cards-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .game-playground {
+        grid-template-columns: 1fr;
+    }
+    
+    .cert-sign-grid {
+        padding: 0 10px;
+    }
+}
+
+/* ================= NEW BEGINNER MODE LESSON STYLES ================= */
+.lesson-select-dropdown {
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 6px 14px;
+    background: #fff;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--text-main);
+    outline: none;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+.lesson-select-dropdown:focus {
+    border-color: var(--primary);
+}
+
+.beginner-sequence-box {
+    background: #f8fafc;
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+    border: 3px dashed #cbd5e1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.sequence-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.sequence-display {
+    font-size: 40px;
+    font-weight: 700;
+    color: var(--text-main);
+    margin: 15px 0 5px 0;
+    letter-spacing: 8px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.seq-char {
+    display: inline-block;
+    padding: 0 4px;
+    transition: all 0.2s;
+    border-radius: 6px;
+    color: #94a3b8;
+}
+
+.seq-char.char-completed {
+    color: var(--success);
+    opacity: 0.7;
+}
+
+.seq-char.char-active {
+    color: var(--primary);
+    background: #e0d9ff;
+    animation: seqCharPulse 1.2s infinite ease-in-out;
+    transform: scale(1.15);
+    font-weight: 800;
+}
+
+@keyframes seqCharPulse {
+    0%, 100% { box-shadow: 0 0 0 0px rgba(108, 92, 231, 0.4); transform: scale(1.1); }
+    50% { box-shadow: 0 0 0 8px rgba(108, 92, 231, 0); transform: scale(1.2); }
+}
+
+.sequence-cursor-indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.arrow-indicator {
+    font-size: 24px;
+    color: var(--primary);
+    animation: arrowBounce 1s infinite ease-in-out;
+    font-weight: 900;
+}
+
+@keyframes arrowBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+.instruction-bubble {
+    background: var(--primary);
+    color: #fff;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 700;
+    box-shadow: 0 4px 8px rgba(108, 92, 231, 0.2);
+    display: inline-block;
+    margin-top: 2px;
+}
+
+.beginner-progress-row {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.beginner-progress-row .progress-bar-container {
+    height: 8px;
+    background: #e2e8f0;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 4px;
+}
+
+.beginner-progress-row .progress-text {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.lesson-complete-card {
+    max-width: 480px !important;
+    padding: 35px !important;
+    border-radius: 24px !important;
+}
